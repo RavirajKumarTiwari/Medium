@@ -1,0 +1,15 @@
+# Shared Node/TypeScript workspace artifacts
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+
+# Explicit env/runtime secrets
+.env
+.env.local
+.env.development
+.env.production

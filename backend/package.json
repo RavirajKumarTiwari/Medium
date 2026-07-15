@@ -1,0 +1,25 @@
+{
+  "name": "backend",
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy --minify",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "migrate": "dotenv -e .dev.vars -- npx prisma migrate dev",
+    "generate": "dotenv -e .dev.vars -- npx prisma generate --no-engine",
+    "studio": "dotenv -e .dev.vars -- npx prisma studio"
+  },
+  "dependencies": {
+    "@lazy_support_engineer/medium-common": "^1.1.0",
+    "@prisma/client": "^7.8.0",
+    "@prisma/extension-accelerate": "^3.0.1",
+    "bcryptjs": "^3.0.3",
+    "hono": "^4.12.16",
+    "prisma": "^7.8.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "dotenv-cli": "^11.0.0",
+    "wrangler": "^4.4.0"
+  }
+}
