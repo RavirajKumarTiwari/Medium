@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { PrismaClient } from '../../generated/prisma/client'
+import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign } from 'hono/jwt';
 import { compare, hash } from 'bcryptjs'
 import {signinInput, signupInput} from '@lazy_support_engineer/medium-common'
@@ -14,13 +15,11 @@ export const userRouter = new Hono<{
 const createPrisma = (databaseUrl: string) => {
   return new PrismaClient({
     accelerateUrl: databaseUrl,
-  });
+  }).$extends(withAccelerate());
 };
 
 
 userRouter.post('/signup', async (c) => {
-  const prisma = createPrisma(c.env.DATABASE_URL);
-  
   const body = await c.req.json();
 
   const validation = signupInput.safeParse(body);
@@ -28,6 +27,7 @@ userRouter.post('/signup', async (c) => {
     return c.json({ error: validation.error}, 411);
   }
 
+  const prisma = createPrisma(c.env.DATABASE_URL);
   try{  const user = await prisma.user.create({
       data: {
         email: body.email,
@@ -46,8 +46,6 @@ userRouter.post('/signup', async (c) => {
 })
 
 userRouter.post('/signin', async (c) => {
-  const prisma = createPrisma(c.env.DATABASE_URL);
-  
   const body = await c.req.json();
 
   const validation = signinInput.safeParse(body);
@@ -55,6 +53,7 @@ userRouter.post('/signin', async (c) => {
     return c.json({ error: validation.error }, 411);
   }
 
+  const prisma = createPrisma(c.env.DATABASE_URL);
   try {
     const user = await prisma.user.findUnique({
       where: {

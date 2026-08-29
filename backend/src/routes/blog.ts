@@ -1,5 +1,6 @@
 import { Hono } from 'hono'
 import { PrismaClient } from '../../generated/prisma/client'
+import { withAccelerate } from '@prisma/extension-accelerate'
 import { verify } from 'hono/jwt'
 import {postInput, updatePostInput, } from '@lazy_support_engineer/medium-common'
 
@@ -38,10 +39,40 @@ blogRouter.use('/*', async (c, next) => {
 const createPrisma = (databaseUrl: string) => {
   return new PrismaClient({
     accelerateUrl: databaseUrl,
-  });
+  }).$extends(withAccelerate());
 };
 
+blogRouter.get('', async (c) => {
+    return c.json({ ok: true, message: 'Blog API' });
+})
 
+blogRouter.get('/', async (c) => {
+    return c.json({ ok: true, message: 'Blog API' });
+})
+
+blogRouter.post('', async (c) => {
+    const body = await c.req.json();
+
+    const validation = postInput.safeParse(body);
+    if (!validation.success) {
+        return c.json({ message: "Invalid input" }, 411);
+    }
+
+    const prisma = createPrisma(c.env.DATABASE_URL);
+    const authorId = c.get('userId');
+
+    const post = await prisma.post.create({
+        data: {
+            title: body.title,
+            content: body.content,
+            authorId: authorId,
+        }
+    })
+
+    return c.json({
+        id: post.id
+    })
+})
 
 blogRouter.post('/', async (c) => {
     const body = await c.req.json();
@@ -67,7 +98,7 @@ blogRouter.post('/', async (c) => {
     })
 })
 
-blogRouter.put('/', async (c) => {
+blogRouter.put('', async (c) => {
     const body = await c.req.json();
     const prisma = createPrisma(c.env.DATABASE_URL);
     const authorId = c.get('userId');
