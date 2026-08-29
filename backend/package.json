@@ -4,9 +4,11 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "migrate": "dotenv -e .dev.vars -- npx prisma migrate dev",
-    "generate": "dotenv -e .dev.vars -- npx prisma generate --no-engine",
+    "generate": "dotenv -e .dev.vars -- npx prisma generate",
+    "generate:ci": "DATABASE_URL=postgresql://user:pass@localhost:5432/db npx prisma generate",
     "studio": "dotenv -e .dev.vars -- npx prisma studio"
   },
   "dependencies": {

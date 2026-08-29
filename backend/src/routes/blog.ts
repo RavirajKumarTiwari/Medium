@@ -1,6 +1,5 @@
 import { Hono } from 'hono'
-import { PrismaClient } from '@prisma/client/edge'
-import { withAccelerate } from '@prisma/extension-accelerate'
+import { PrismaClient } from '../../generated/prisma/client'
 import { verify } from 'hono/jwt'
 import {postInput, updatePostInput, } from '@lazy_support_engineer/medium-common'
 
@@ -39,7 +38,7 @@ blogRouter.use('/*', async (c, next) => {
 const createPrisma = (databaseUrl: string) => {
   return new PrismaClient({
     accelerateUrl: databaseUrl,
-  }).$extends(withAccelerate());
+  });
 };
 
 
@@ -130,4 +129,3 @@ blogRouter.get('/:id', async (c) => {
         })
     }
 })
-

@@ -1,6 +1,5 @@
 import { Hono } from 'hono'
-import { PrismaClient } from '@prisma/client/edge'
-import { withAccelerate } from '@prisma/extension-accelerate'
+import { PrismaClient } from '../../generated/prisma/client'
 import { sign } from 'hono/jwt';
 import { compare, hash } from 'bcryptjs'
 import {signinInput, signupInput} from '@lazy_support_engineer/medium-common'
@@ -15,7 +14,7 @@ export const userRouter = new Hono<{
 const createPrisma = (databaseUrl: string) => {
   return new PrismaClient({
     accelerateUrl: databaseUrl,
-  }).$extends(withAccelerate());
+  });
 };
 
 
