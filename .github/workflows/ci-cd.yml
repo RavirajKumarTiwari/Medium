@@ -86,6 +86,16 @@ jobs:
         run: npm ci --ignore-scripts
         working-directory: backend
 
+      - name: Validate Cloudflare token with Wrangler
+        run: |
+          echo "== Validating CLOUDFLARE_API_TOKEN with 'wrangler whoami' =="
+          npx -y wrangler whoami || (
+            echo "\nERROR: Cloudflare authentication failed. Common causes:\n  - token lacks required scopes (workers_scripts:write, account:read, etc.)\n  - token is IP-restricted and cannot be used from GitHub Actions runner\n\nPlease recreate a token without IP restrictions and update the CLOUDFLARE_API_TOKEN secret.\n" && exit 1
+          )
+        working-directory: backend
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+
       - name: Generate Prisma client
         run: npm run generate:ci
         working-directory: backend
