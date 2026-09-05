@@ -13,3 +13,5 @@ Thumbs.db
 .env.local
 .env.development
 .env.production
+.dev.vars
+.wrangler/
