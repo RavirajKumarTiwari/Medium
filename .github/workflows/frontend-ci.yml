@@ -1,0 +1,93 @@
+name: Frontend CI
+
+on:
+  pull_request:
+    paths:
+      - "frontend/**"
+      - "common/**"
+      - "netlify.toml"
+      - ".github/workflows/frontend-ci.yml"
+      - ".github/workflows/frontend-deploy.yml"
+  push:
+    paths:
+      - "frontend/**"
+      - "common/**"
+      - "netlify.toml"
+      - ".github/workflows/frontend-ci.yml"
+      - ".github/workflows/frontend-deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: frontend
+
+jobs:
+  validate:
+    name: Validate frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install frontend dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Lint frontend
+        run: npm run lint
+
+      - name: Build frontend
+        run: |
+          export VITE_API_BASE_URL="$(awk -F= '/^VITE_API_BASE_URL=/{print $2}' .env.example)"
+          test -n "$VITE_API_BASE_URL"
+          npm run build
+
+  deploy:
+    name: Deploy frontend to Netlify
+    needs: validate
+    if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    environment:
+      name: frontend-production
+
+    concurrency:
+      group: frontend-production-deploy
+      cancel-in-progress: false
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Validate Netlify credentials
+        run: |
+          test -n "$NETLIFY_AUTH_TOKEN" || { echo "NETLIFY_AUTH_TOKEN secret is required."; exit 1; }
+          test -n "$NETLIFY_SITE_ID" || { echo "NETLIFY_SITE_ID secret is required."; exit 1; }
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+      - name: Install frontend dependencies
+        run: npm ci --ignore-scripts
+
+      - name: Deploy frontend
+        run: npx --yes netlify-cli@23.9.4 deploy --prod --build --site "$NETLIFY_SITE_ID" --auth "$NETLIFY_AUTH_TOKEN"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}

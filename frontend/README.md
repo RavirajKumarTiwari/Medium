@@ -15,6 +15,26 @@ requests, while backend secrets remain configured in Cloudflare.
 For a production build, provide the variable through the deployment platform's
 environment configuration before running `npm run build`.
 
+## Frontend CI/CD
+
+Frontend validation and deployment are separate from the backend workflow because
+this repository is a monorepo:
+
+- `.github/workflows/frontend-ci.yml` runs lint and a production build for
+  frontend-related pull requests and pushes. On `main`, its deployment job
+  runs only after the validation job succeeds.
+
+Configure these secrets in the GitHub `frontend-production` environment:
+
+```text
+NETLIFY_AUTH_TOKEN
+NETLIFY_SITE_ID
+```
+
+The Netlify site must also define `VITE_API_BASE_URL` as a production
+environment variable. It is public browser configuration, not a secret; backend
+credentials must never be added to frontend environment variables.
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
