@@ -125,6 +125,10 @@
 :root[data-theme='dark'] .landing-header nav a {
   color: #aaa59c;
 }
+:root[data-theme='dark'] .landing-header .landing-header-cta,
+:root[data-theme='dark'] .landing-header .landing-header-cta b {
+  color: #f1eee8 !important;
+}
 :root[data-theme='dark'] .article-title-block,
 :root[data-theme='dark'] .article-engagement,
 :root[data-theme='dark'] .article-response,
@@ -294,6 +298,14 @@
 :root[data-theme='dark'] .editor-skeleton span,
 :root[data-theme='dark'] .editor-skeleton-brand,
 :root[data-theme='dark'] .editor-skeleton-action { background: #514d46; }
+:root[data-theme='dark'] .landing-skeleton-story,
+:root[data-theme='dark'] .dashboard-loading span,
+:root[data-theme='dark'] .studio-loading span {
+  background: #292825;
+}
+:root[data-theme='dark'] .landing-skeleton-story > div:first-child {
+  background: #514d46;
+}
 @media (max-width: 600px) {
   .article-skeleton { padding: 100px 22px 70px; }
   .editor-skeleton { padding: 65px 22px 24px; }
