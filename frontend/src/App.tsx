@@ -14,8 +14,13 @@ import { ArticleReaderPage } from './features/article/ArticleReaderPage'
 import { EditorPage } from './features/editor/EditorPage'
 import { FeedPage } from './features/feed/FeedPage'
 import { StudioPage } from './features/studio/StudioPage'
+import { ThemeProvider } from './theme/ThemeContext'
 
 export default function App() {
+  return <ThemeProvider><AppContent /></ThemeProvider>
+}
+
+function AppContent() {
   const [activeSection, setActiveSection] = useState('Overview')
   const path = window.location.pathname
   useEffect(() => {

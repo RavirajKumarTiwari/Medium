@@ -1,6 +1,36 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,500;1,600&display=swap');
 
 :root { color: #22211f; background: #f7f5f0; font-family: 'DM Sans', sans-serif; font-synthesis: none; }
+:root[data-theme='dark'] { color-scheme: dark; background: #1e1d1b; color: #f1eee8; }
+:root[data-theme='dark'] .landing-page,
+:root[data-theme='dark'] .auth-page,
+:root[data-theme='dark'] .dashboard-page,
+:root[data-theme='dark'] .article-page,
+:root[data-theme='dark'] .editor-page,
+:root[data-theme='dark'] .studio-page,
+:root[data-theme='dark'] .app-shell { background: #1e1d1b; color: #f1eee8; }
+:root[data-theme='dark'] .landing-header,
+:root[data-theme='dark'] .landing-hero,
+:root[data-theme='dark'] .landing-story,
+:root[data-theme='dark'] .landing-invite,
+:root[data-theme='dark'] .auth-form-panel,
+:root[data-theme='dark'] .dashboard-header,
+:root[data-theme='dark'] .article-header,
+:root[data-theme='dark'] .editor-header,
+:root[data-theme='dark'] .studio-header,
+:root[data-theme='dark'] .topbar { border-color: #3b3935; background: #1e1d1b; }
+:root[data-theme='dark'] .landing-story,
+:root[data-theme='dark'] .landing-invite { background: #292825; }
+:root[data-theme='dark'] .landing-brand,
+:root[data-theme='dark'] .landing-hero h1,
+:root[data-theme='dark'] .landing-section-heading h2,
+:root[data-theme='dark'] .landing-invite h2,
+:root[data-theme='dark'] .auth-form-panel h2,
+:root[data-theme='dark'] .dashboard-title-row h1,
+:root[data-theme='dark'] .article-title-block h1,
+:root[data-theme='dark'] .editor-title-label input,
+:root[data-theme='dark'] .studio-page h1,
+:root[data-theme='dark'] .brand { color: #f1eee8; }
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; }
 button, input { font: inherit; }

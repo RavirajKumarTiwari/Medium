@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { getPublicPosts, type Post } from '../../lib/api'
+import { useTheme } from '../../theme/ThemeContext'
 import './feed.css'
 
 export function FeedPage() {
   const [posts, setPosts] = useState<Post[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('daily-post-theme') === 'dark')
+  const { theme, toggleTheme } = useTheme()
+  const darkMode = theme === 'dark'
 
   useEffect(() => {
     getPublicPosts()
@@ -14,10 +16,6 @@ export function FeedPage() {
       .catch((requestError: unknown) => setError(requestError instanceof Error ? requestError.message : 'Unable to load the public feed.'))
       .finally(() => setLoading(false))
   }, [])
-
-  useEffect(() => {
-    localStorage.setItem('daily-post-theme', darkMode ? 'dark' : 'light')
-  }, [darkMode])
 
   const stories = posts.map((post, index) => ({
     category: post.published ? 'PUBLISHED STORY' : 'FROM YOUR DRAFTS',
@@ -32,7 +30,7 @@ export function FeedPage() {
     <main className={`feed-page ${darkMode ? 'feed-dark' : ''}`}>
       <header className="feed-header">
         <a className="feed-brand" href="/" aria-label="Daily Post home"><span>D</span> Daily Post</a>
-        <nav aria-label="Feed navigation"><a className="feed-active" href="/feed">Home</a><a href="#topics">Topics</a><a href="/write" className="feed-write">Write <b>↗</b></a><button className="feed-theme-toggle" onClick={() => setDarkMode((value) => !value)} aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}>{darkMode ? '☼' : '◐'}</button><a className="feed-avatar" href="/dashboard">AR</a></nav>
+        <nav aria-label="Feed navigation"><a className="feed-active" href="/feed">Home</a><a href="#topics">Topics</a><a href="/write" className="feed-write">Write <b>↗</b></a><button className="feed-theme-toggle" onClick={toggleTheme} aria-label={darkMode ? 'Switch to light mode' : 'Switch to dark mode'}>{darkMode ? '☼' : '◐'}</button><a className="feed-avatar" href="/dashboard">AR</a></nav>
       </header>
       <div className="feed-layout">
         <section className="feed-main">

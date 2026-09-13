@@ -14,9 +14,11 @@ export function EditorPage({ postId }: EditorPageProps) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [saved, setSaved] = useState(false)
+  const [isDirty, setIsDirty] = useState(false)
   const [preview, setPreview] = useState(false)
   const contentRef = useRef<HTMLTextAreaElement>(null)
   const selectionRef = useRef({ start: 0, end: 0 })
+  const publishingRef = useRef(false)
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0
 
   function insertMarkdown(prefix: string, suffix = prefix, placeholder: string) {
@@ -64,6 +66,7 @@ export function EditorPage({ postId }: EditorPageProps) {
         else {
           setTitle(post.title)
           setContent(post.content)
+          setIsDirty(false)
         }
       })
       .catch((requestError: unknown) => {
@@ -80,14 +83,14 @@ export function EditorPage({ postId }: EditorPageProps) {
 
   useEffect(() => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
-      if (title.trim() || content.trim()) {
+      if (!publishingRef.current && isDirty) {
         event.preventDefault()
         event.returnValue = ''
       }
     }
     window.addEventListener('beforeunload', handleBeforeUnload)
     return () => window.removeEventListener('beforeunload', handleBeforeUnload)
-  }, [title, content])
+  }, [isDirty])
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -102,13 +105,17 @@ export function EditorPage({ postId }: EditorPageProps) {
     }
     setError('')
     setSaving(true)
+    publishingRef.current = true
     try {
       const result = isEditing
         ? await updatePost(token, { id: postId!, title: title.trim(), content: content.trim() })
         : await createPost(token, { title: title.trim(), content: content.trim() })
       setSaved(true)
+      setIsDirty(false)
       window.location.assign(`/article/${result.id}`)
     } catch (requestError) {
+      publishingRef.current = false
+      setIsDirty(true)
       setError(requestError instanceof Error ? requestError.message : 'Unable to save your story.')
     } finally {
       setSaving(false)
@@ -124,7 +131,7 @@ export function EditorPage({ postId }: EditorPageProps) {
         <div className="editor-header-actions"><span className="editor-saved"><i /> {saved ? 'Saved' : 'Unsaved changes'}</span><a href="/dashboard">Exit editor</a></div>
       </header>
       <form className="editor-form" onSubmit={handleSubmit}>
-        <label className="editor-title-label"><span className="sr-only">Story title</span><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Title" aria-label="Story title" autoFocus={!isEditing} /></label>
+        <label className="editor-title-label"><span className="sr-only">Story title</span><input value={title} onChange={(event) => { setTitle(event.target.value); setIsDirty(true) }} placeholder="Title" aria-label="Story title" autoFocus={!isEditing} /></label>
         <div className="editor-toolbar" aria-label="Writing tools">
           <button type="button" aria-label="Bold text" title="Bold selected text" onMouseDown={(event) => { event.preventDefault(); preserveSelection() }} onClick={() => insertMarkdown('**', '**', 'bold text')}><strong>B</strong></button>
           <button type="button" aria-label="Italic text" title="Italicize selected text" onMouseDown={(event) => { event.preventDefault(); preserveSelection() }} onClick={() => insertMarkdown('*', '*', 'italic text')}><em>I</em></button>
@@ -133,7 +140,7 @@ export function EditorPage({ postId }: EditorPageProps) {
           <button type="button" className={preview ? 'editor-mode-active' : ''} onClick={() => setPreview((value) => !value)} aria-pressed={preview}>{preview ? 'Edit' : 'Preview'}</button>
           <small>Markdown supported</small>
         </div>
-        {preview ? <div className="editor-content-label editor-markdown-preview" aria-label="Markdown preview"><Markdown remarkPlugins={[remarkGfm]}>{content || '*Your Markdown preview will appear here.*'}</Markdown></div> : <label className="editor-content-label"><span className="sr-only">Story content</span><textarea ref={contentRef} value={content} onChange={(event) => { setContent(event.target.value); selectionRef.current = { start: event.target.selectionStart, end: event.target.selectionEnd } }} onSelect={preserveSelection} placeholder="Tell your story in Markdown..." aria-label="Story content" /></label>}
+        {preview ? <div className="editor-content-label editor-markdown-preview" aria-label="Markdown preview"><Markdown remarkPlugins={[remarkGfm]}>{content || '*Your Markdown preview will appear here.*'}</Markdown></div> : <label className="editor-content-label"><span className="sr-only">Story content</span><textarea ref={contentRef} value={content} onChange={(event) => { setContent(event.target.value); setIsDirty(true); selectionRef.current = { start: event.target.selectionStart, end: event.target.selectionEnd } }} onSelect={preserveSelection} placeholder="Tell your story in Markdown..." aria-label="Story content" /></label>}
         {error && <p className="editor-error" role="alert">{error}</p>}
         <footer className="editor-footer"><span>{wordCount.toLocaleString()} words <i /> Your words, uninterrupted.</span><button type="submit" disabled={saving}>{saving ? 'Publishing...' : isEditing ? 'Publish changes' : 'Publish story'} <b>↗</b></button></footer>
       </form>
