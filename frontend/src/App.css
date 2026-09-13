@@ -21,6 +21,63 @@
 :root[data-theme='dark'] .topbar { border-color: #3b3935; background: #1e1d1b; }
 :root[data-theme='dark'] .landing-story,
 :root[data-theme='dark'] .landing-invite { background: #292825; }
+:root[data-theme='dark'] .landing-header,
+:root[data-theme='dark'] .dashboard-header,
+:root[data-theme='dark'] .article-header,
+:root[data-theme='dark'] .editor-header,
+:root[data-theme='dark'] .studio-header,
+:root[data-theme='dark'] .topbar {
+  border-bottom-color: #3b3935;
+}
+:root[data-theme='dark'] .landing-header .landing-brand,
+:root[data-theme='dark'] .dashboard-header .dashboard-brand,
+:root[data-theme='dark'] .article-header .article-brand,
+:root[data-theme='dark'] .editor-header .editor-brand,
+:root[data-theme='dark'] .studio-header .studio-brand,
+:root[data-theme='dark'] .topbar .brand {
+  color: #f1eee8;
+}
+:root[data-theme='dark'] .landing-brand span,
+:root[data-theme='dark'] .dashboard-brand span,
+:root[data-theme='dark'] .article-brand span,
+:root[data-theme='dark'] .editor-brand span,
+:root[data-theme='dark'] .studio-brand span,
+:root[data-theme='dark'] .topbar .brand-mark {
+  color: #1e1d1b;
+  background: #f1eee8;
+}
+:root[data-theme='dark'] .landing-header nav a,
+:root[data-theme='dark'] .dashboard-nav a,
+:root[data-theme='dark'] .article-header nav a,
+:root[data-theme='dark'] .editor-header-actions a,
+:root[data-theme='dark'] .studio-header nav a,
+:root[data-theme='dark'] .topbar-meta {
+  color: #aaa59c;
+}
+:root[data-theme='dark'] .landing-header .landing-header-cta,
+:root[data-theme='dark'] .dashboard-nav .dashboard-nav-active,
+:root[data-theme='dark'] .studio-header nav .studio-active {
+  color: #f1eee8;
+}
+:root[data-theme='dark'] .dashboard-nav button,
+:root[data-theme='dark'] .editor-saved,
+:root[data-theme='dark'] .version-pill {
+  color: #d9896d;
+}
+:root[data-theme='dark'] .dashboard-nav button,
+:root[data-theme='dark'] .topbar .divider {
+  border-left-color: #3b3935;
+}
+:root[data-theme='dark'] .dashboard-nav a:nth-child(2),
+:root[data-theme='dark'] .article-avatar,
+:root[data-theme='dark'] .studio-avatar,
+:root[data-theme='dark'] .topbar .avatar {
+  color: #263026 !important;
+  background: #d5d9ce;
+}
+:root[data-theme='dark'] .version-pill {
+  border-color: #8d5545;
+}
 :root[data-theme='dark'] .landing-brand,
 :root[data-theme='dark'] .landing-hero h1,
 :root[data-theme='dark'] .landing-section-heading h2,
@@ -31,6 +88,171 @@
 :root[data-theme='dark'] .editor-title-label input,
 :root[data-theme='dark'] .studio-page h1,
 :root[data-theme='dark'] .brand { color: #f1eee8; }
+:root[data-theme='dark'],
+:root[data-theme='dark'] body {
+  background: #1e1d1b;
+  color: #f1eee8;
+}
+:root[data-theme='dark'] .article-page,
+:root[data-theme='dark'] .editor-page,
+:root[data-theme='dark'] .dashboard-page,
+:root[data-theme='dark'] .studio-page,
+:root[data-theme='dark'] .landing-page,
+:root[data-theme='dark'] .auth-page,
+:root[data-theme='dark'] .app-shell {
+  background: #1e1d1b;
+  color: #f1eee8;
+}
+:root[data-theme='dark'] .article-brand,
+:root[data-theme='dark'] .editor-brand,
+:root[data-theme='dark'] .dashboard-brand,
+:root[data-theme='dark'] .studio-brand,
+:root[data-theme='dark'] .landing-brand {
+  color: #f1eee8 !important;
+}
+:root[data-theme='dark'] .article-brand span,
+:root[data-theme='dark'] .editor-brand span,
+:root[data-theme='dark'] .dashboard-brand span,
+:root[data-theme='dark'] .studio-brand span,
+:root[data-theme='dark'] .landing-brand span {
+  color: #1e1d1b;
+  background: #f1eee8;
+}
+:root[data-theme='dark'] .article-header nav a,
+:root[data-theme='dark'] .editor-header-actions a,
+:root[data-theme='dark'] .dashboard-nav a,
+:root[data-theme='dark'] .studio-header nav a,
+:root[data-theme='dark'] .landing-header nav a {
+  color: #aaa59c;
+}
+:root[data-theme='dark'] .article-title-block,
+:root[data-theme='dark'] .article-engagement,
+:root[data-theme='dark'] .article-response,
+:root[data-theme='dark'] .editor-toolbar,
+:root[data-theme='dark'] .editor-footer,
+:root[data-theme='dark'] .dashboard-rule,
+:root[data-theme='dark'] .dashboard-story,
+:root[data-theme='dark'] .dashboard-footer,
+:root[data-theme='dark'] .studio-section-heading,
+:root[data-theme='dark'] .studio-story,
+:root[data-theme='dark'] .landing-hero {
+  border-color: #3b3935;
+}
+:root[data-theme='dark'] .article-title-block h1,
+:root[data-theme='dark'] .article-response h2,
+:root[data-theme='dark'] .article-state h1,
+:root[data-theme='dark'] .editor-title-label input,
+:root[data-theme='dark'] .dashboard-title-row h1,
+:root[data-theme='dark'] .dashboard-story h2,
+:root[data-theme='dark'] .studio-sidebar h1,
+:root[data-theme='dark'] .studio-intro h2,
+:root[data-theme='dark'] .studio-section-heading h3,
+:root[data-theme='dark'] .landing-hero h1,
+:root[data-theme='dark'] .landing-section-heading h2,
+:root[data-theme='dark'] .landing-story-copy h3,
+:root[data-theme='dark'] .landing-invite h2 {
+  color: #f1eee8;
+}
+:root[data-theme='dark'] .article-dek,
+:root[data-theme='dark'] .article-body p,
+:root[data-theme='dark'] .article-body ul,
+:root[data-theme='dark'] .article-body ol,
+:root[data-theme='dark'] .article-body pre,
+:root[data-theme='dark'] .editor-content-label textarea,
+:root[data-theme='dark'] .editor-markdown-preview,
+:root[data-theme='dark'] .dashboard-title-row p,
+:root[data-theme='dark'] .dashboard-story-main > p,
+:root[data-theme='dark'] .studio-sidebar > p,
+:root[data-theme='dark'] .studio-story p,
+:root[data-theme='dark'] .landing-hero-copy > p,
+:root[data-theme='dark'] .landing-section-heading p {
+  color: #c0bbb2;
+}
+:root[data-theme='dark'] .article-body blockquote,
+:root[data-theme='dark'] .editor-markdown-preview blockquote {
+  color: #aaa59c;
+}
+:root[data-theme='dark'] .article-response textarea,
+:root[data-theme='dark'] .auth-form input {
+  color: #f1eee8;
+  background: #292825;
+  border-color: #514d46;
+}
+:root[data-theme='dark'] .article-body code,
+:root[data-theme='dark'] .editor-markdown-preview code,
+:root[data-theme='dark'] .studio-metrics div,
+:root[data-theme='dark'] .landing-invite {
+  background: #292825;
+}
+:root[data-theme='dark'] .auth-form-panel {
+  background: #1e1d1b;
+  color: #f1eee8;
+}
+:root[data-theme='dark'] .auth-form-heading h2,
+:root[data-theme='dark'] .auth-tabs button.selected {
+  color: #f1eee8;
+}
+:root[data-theme='dark'] .auth-form-heading p,
+:root[data-theme='dark'] .auth-form label,
+:root[data-theme='dark'] .auth-tabs button {
+  color: #aaa59c;
+}
+:root[data-theme='dark'] .auth-tabs,
+:root[data-theme='dark'] .studio-menu,
+:root[data-theme='dark'] .studio-sidebar {
+  border-color: #3b3935;
+}
+:root[data-theme='dark'] .dashboard-write-button,
+:root[data-theme='dark'] .editor-footer button,
+:root[data-theme='dark'] .auth-submit,
+:root[data-theme='dark'] .article-response button,
+:root[data-theme='dark'] .studio-write,
+:root[data-theme='dark'] .landing-primary {
+  color: #1e1d1b;
+  background: #f1eee8;
+  border-color: #f1eee8;
+}
+:root[data-theme='dark'] .dashboard-write-button span,
+:root[data-theme='dark'] .editor-footer button b,
+:root[data-theme='dark'] .article-response button span,
+:root[data-theme='dark'] .studio-write span,
+:root[data-theme='dark'] .landing-primary b {
+  color: #b96045;
+}
+:root[data-theme='dark'] .sidebar,
+:root[data-theme='dark'] .content,
+:root[data-theme='dark'] .hero-section,
+:root[data-theme='dark'] .showcase-section,
+:root[data-theme='dark'] .components-section {
+  background: #1e1d1b;
+  color: #f1eee8;
+  border-color: #3b3935;
+}
+:root[data-theme='dark'] .nav-item.active,
+:root[data-theme='dark'] .swatch-paper,
+:root[data-theme='dark'] .swatch-stone {
+  background: #292825;
+  color: #f1eee8;
+  border-color: #514d46;
+}
+:root[data-theme='dark'] .sidebar h1,
+:root[data-theme='dark'] .hero-copy h2,
+:root[data-theme='dark'] .section-heading h2,
+:root[data-theme='dark'] .type-display h2,
+:root[data-theme='dark'] .principles h3,
+:root[data-theme='dark'] .type-body p {
+  color: #f1eee8;
+}
+:root[data-theme='dark'] .lede,
+:root[data-theme='dark'] .hero-note,
+:root[data-theme='dark'] .principles p,
+:root[data-theme='dark'] .section-heading p,
+:root[data-theme='dark'] .type-kicker,
+:root[data-theme='dark'] .type-meta,
+:root[data-theme='dark'] .sidebar-intro p,
+:root[data-theme='dark'] .sidebar-footer {
+  color: #aaa59c;
+}
 * { box-sizing: border-box; }
 body { margin: 0; min-width: 320px; }
 button, input { font: inherit; }
