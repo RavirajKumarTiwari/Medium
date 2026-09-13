@@ -15,3 +15,6 @@ Thumbs.db
 .env.production
 .dev.vars
 .wrangler/
+
+# Local Netlify folder
+.netlify
