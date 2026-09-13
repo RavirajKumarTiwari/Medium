@@ -122,7 +122,7 @@ export function EditorPage({ postId }: EditorPageProps) {
     }
   }
 
-  if (loading) return <main className="editor-page editor-loading">Opening your story...</main>
+  if (loading) return <main className="editor-page"><header className="editor-header"><span className="editor-skeleton-brand" /><span className="editor-skeleton-action" /></header><div className="editor-skeleton" aria-label="Opening your story"><span /><span /><span /><span /></div></main>
 
   return (
     <main className="editor-page">

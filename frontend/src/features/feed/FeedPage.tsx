@@ -35,7 +35,7 @@ export function FeedPage() {
         <section className="feed-main">
           <div className="feed-welcome"><span className="feed-kicker">Good morning, reader</span><h1>Ideas for your <em>day.</em></h1><p>A considered collection of stories from people thinking out loud.</p></div>
           <div className="feed-tabs" role="tablist"><button className="feed-tab-selected" role="tab" aria-selected="true">For you</button><button role="tab" aria-selected="false">Following</button><button role="tab" aria-selected="false">Latest</button></div>
-          {loading && <div className="feed-state">Loading published stories...</div>}
+          {loading && <div className="feed-skeleton-list" aria-label="Loading published stories">{[1, 2, 3].map((item) => <article className="feed-story feed-skeleton-story" key={item}><div className="feed-skeleton-copy"><span /><span /><span /><span /></div></article>)}</div>}
           {!loading && error && <div className="feed-state feed-error" role="alert">{error}</div>}
           {!loading && !error && stories.length === 0 && <div className="feed-state">No published stories yet. Be the first to share an idea.</div>}
           {!loading && !error && stories.length > 0 && <div className="feed-story-list">{stories.map((story) => <article className="feed-story" key={story.id}><div className="feed-story-copy"><span className="feed-category">{story.category}</span><h2><a href={`/article/${story.id}`}>{story.title}</a></h2><p className="feed-excerpt">A small reflection on building a life and practice with more attention, patience, and room to think.</p><div className="feed-meta"><span>{story.author}</span><i /><span>{story.time}</span><button aria-label={`Save ${story.title}`}>♡</button></div></div></article>)}</div>}

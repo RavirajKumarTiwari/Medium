@@ -56,7 +56,7 @@ export function ArticleReaderPage({ id }: ArticleReaderPageProps) {
         <a className="article-brand" href="/"><span>D</span> Daily Post</a>
         <nav><a href="/dashboard">Your stories</a><a className="article-avatar" href="#profile">AR</a></nav>
       </header>
-      {loading && <div className="article-state"><span className="article-loader" /><p>Loading story...</p></div>}
+      {loading && <div className="article-skeleton" aria-label="Loading story"><span /><span /><span /><span /><span /><span /><span /></div>}
       {!loading && error && <div className="article-state"><h1>We couldn&apos;t find that story.</h1><p>{error}</p><a href="/dashboard">Back to your stories ↗</a></div>}
       {!loading && !error && post && (
         <article className="article-reader">
