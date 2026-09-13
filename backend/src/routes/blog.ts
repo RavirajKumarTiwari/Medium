@@ -16,6 +16,34 @@ export const blogRouter = new Hono<{
   }
 }>();
 
+export const publicBlogRouter = new Hono<{
+  Bindings: {
+    DATABASE_URL: string,
+  }
+}>();
+
+publicBlogRouter.get('/feed', async (c) => {
+  const prisma = createPrisma(c.env.DATABASE_URL);
+  const posts = await prisma.post.findMany({
+    where: {
+      published: true,
+    },
+    orderBy: {
+      id: 'desc',
+    },
+    include: {
+      author: {
+        select: {
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  return c.json({ posts });
+});
+
 // middleware
 blogRouter.use('/*', async (c, next) => {
   const header = c.req.header('authorization') || "";
@@ -66,6 +94,7 @@ blogRouter.post('', async (c) => {
             title: body.title,
             content: body.content,
             authorId: authorId,
+            published: true,
         }
     })
 
@@ -90,6 +119,7 @@ blogRouter.post('/', async (c) => {
             title: body.title,
             content: body.content,
             authorId: authorId,
+            published: true,
         }
     })
 

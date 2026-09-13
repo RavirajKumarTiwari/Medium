@@ -1,4 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react'
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { getPost, type Post } from '../../lib/api'
 import './article.css'
 
@@ -65,7 +67,7 @@ export function ArticleReaderPage({ id }: ArticleReaderPageProps) {
             <p className="article-dek">A thoughtful note from the Daily Post community.</p>
             <div className="article-meta"><span className="article-author">AR</span><span>Daily Post author</span><i /><span>5 min read</span></div>
           </header>
-          <div className="article-body">{post.content.split(/\n{2,}/).map((paragraph, index) => <p key={`${post.id}-${index}`}>{paragraph}</p>)}</div>
+          <div className="article-body"><Markdown remarkPlugins={[remarkGfm]}>{post.content}</Markdown></div>
           <div className="article-engagement" aria-label="Story engagement">
             <button className={claps > 12 ? 'engagement-active' : ''} onClick={() => setClaps((value) => value + 1)} aria-label="Clap for this story">👏 <span>{claps}</span></button>
             <button className={saved ? 'engagement-active' : ''} onClick={() => setSaved((value) => !value)} aria-label={saved ? 'Remove bookmark' : 'Bookmark story'}>{saved ? '🔖' : '♡'}</button>

@@ -28,7 +28,7 @@ export function AuthPage({ initialMode = 'signin' }: AuthPageProps) {
     try {
       const { jwt } = await authenticate(mode, payload)
       localStorage.setItem('daily-post-jwt', jwt)
-      window.location.assign('/dashboard')
+      window.location.assign('/feed')
     } catch (requestError) {
       setError(requestError instanceof Error ? requestError.message : 'Unable to connect. Please try again.')
     } finally {

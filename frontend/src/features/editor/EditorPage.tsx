@@ -1,4 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import { createPost, getPost, updatePost } from '../../lib/api'
 import './editor.css'
 
@@ -12,7 +14,42 @@ export function EditorPage({ postId }: EditorPageProps) {
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
   const [saved, setSaved] = useState(false)
+  const [preview, setPreview] = useState(false)
+  const contentRef = useRef<HTMLTextAreaElement>(null)
+  const selectionRef = useRef({ start: 0, end: 0 })
   const wordCount = content.trim() ? content.trim().split(/\s+/).length : 0
+
+  function insertMarkdown(prefix: string, suffix = prefix, placeholder: string) {
+    const textarea = contentRef.current
+    if (!textarea) return
+
+    const { start, end } = selectionRef.current
+    const selected = content.slice(start, end)
+    const value = selected || placeholder
+    const nextContent = `${content.slice(0, start)}${prefix}${value}${suffix}${content.slice(end)}`
+    setContent(nextContent)
+
+    requestAnimationFrame(() => {
+      textarea.focus()
+      const selectionStart = start + prefix.length
+      textarea.setSelectionRange(selectionStart, selectionStart + value.length)
+    })
+  }
+
+  function preserveSelection() {
+    const textarea = contentRef.current
+    if (!textarea) return
+    selectionRef.current = {
+      start: textarea.selectionStart,
+      end: textarea.selectionEnd,
+    }
+  }
+
+  function insertLink() {
+    const url = window.prompt('Enter the link URL')
+    if (!url?.trim()) return
+    insertMarkdown('[', `](${url.trim()})`, 'link text')
+  }
 
   useEffect(() => {
     if (!postId) return
@@ -89,15 +126,16 @@ export function EditorPage({ postId }: EditorPageProps) {
       <form className="editor-form" onSubmit={handleSubmit}>
         <label className="editor-title-label"><span className="sr-only">Story title</span><input value={title} onChange={(event) => setTitle(event.target.value)} placeholder="Title" aria-label="Story title" autoFocus={!isEditing} /></label>
         <div className="editor-toolbar" aria-label="Writing tools">
-          <button type="button" aria-label="Bold text"><strong>B</strong></button>
-          <button type="button" aria-label="Italic text"><em>I</em></button>
+          <button type="button" aria-label="Bold text" title="Bold selected text" onMouseDown={(event) => { event.preventDefault(); preserveSelection() }} onClick={() => insertMarkdown('**', '**', 'bold text')}><strong>B</strong></button>
+          <button type="button" aria-label="Italic text" title="Italicize selected text" onMouseDown={(event) => { event.preventDefault(); preserveSelection() }} onClick={() => insertMarkdown('*', '*', 'italic text')}><em>I</em></button>
           <span />
-          <button type="button" aria-label="Add a link">↗</button>
-          <small>Plain text</small>
+          <button type="button" aria-label="Add a link" title="Add a Markdown link" onMouseDown={(event) => { event.preventDefault(); preserveSelection() }} onClick={insertLink}>↗</button>
+          <button type="button" className={preview ? 'editor-mode-active' : ''} onClick={() => setPreview((value) => !value)} aria-pressed={preview}>{preview ? 'Edit' : 'Preview'}</button>
+          <small>Markdown supported</small>
         </div>
-        <label className="editor-content-label"><span className="sr-only">Story content</span><textarea value={content} onChange={(event) => setContent(event.target.value)} placeholder="Tell your story..." aria-label="Story content" /></label>
+        {preview ? <div className="editor-content-label editor-markdown-preview" aria-label="Markdown preview"><Markdown remarkPlugins={[remarkGfm]}>{content || '*Your Markdown preview will appear here.*'}</Markdown></div> : <label className="editor-content-label"><span className="sr-only">Story content</span><textarea ref={contentRef} value={content} onChange={(event) => { setContent(event.target.value); selectionRef.current = { start: event.target.selectionStart, end: event.target.selectionEnd } }} onSelect={preserveSelection} placeholder="Tell your story in Markdown..." aria-label="Story content" /></label>}
         {error && <p className="editor-error" role="alert">{error}</p>}
-        <footer className="editor-footer"><span>{wordCount.toLocaleString()} words <i /> Your words, uninterrupted.</span><button type="submit" disabled={saving}>{saving ? 'Saving...' : isEditing ? 'Save changes' : 'Save draft'} <b>↗</b></button></footer>
+        <footer className="editor-footer"><span>{wordCount.toLocaleString()} words <i /> Your words, uninterrupted.</span><button type="submit" disabled={saving}>{saving ? 'Publishing...' : isEditing ? 'Publish changes' : 'Publish story'} <b>↗</b></button></footer>
       </form>
     </main>
   )

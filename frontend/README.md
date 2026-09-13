@@ -1,6 +1,19 @@
-# React + TypeScript + Vite
+# Daily Post frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Environment configuration
+
+Copy `.env.example` to `.env.local` and set the backend API base URL:
+
+```bash
+cp .env.example .env.local
+```
+
+Vite exposes only variables prefixed with `VITE_` to browser code. Do not put
+secrets in these files. The frontend uses `VITE_API_BASE_URL` for all API
+requests, while backend secrets remain configured in Cloudflare.
+
+For a production build, provide the variable through the deployment platform's
+environment configuration before running `npm run build`.
 
 Currently, two official plugins are available:
 

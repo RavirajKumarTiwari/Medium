@@ -19,14 +19,14 @@ export default function App() {
   const [activeSection, setActiveSection] = useState('Overview')
   const path = window.location.pathname
   useEffect(() => {
-    document.title = path === '/studio' ? 'Daily Post — Creator Studio' : path === '/feed' ? 'Daily Post — Home' : path === '/write' || path.startsWith('/edit/') ? 'Daily Post — Write' : path.startsWith('/article/') ? 'Daily Post — Article' : path === '/design-system' ? 'Daily Post — Design System' : path === '/dashboard' ? 'Daily Post — Your stories' : path === '/signup' ? 'Daily Post — Create account' : path === '/signin' ? 'Daily Post — Sign in' : 'Daily Post — Ideas worth sharing'
+    document.title = path === '/studio' ? 'Daily Post — Creator Studio' : path === '/feed' || path === '/blog/feed' ? 'Daily Post — Home' : path === '/write' || path.startsWith('/edit/') ? 'Daily Post — Write' : path.startsWith('/article/') ? 'Daily Post — Article' : path === '/design-system' ? 'Daily Post — Design System' : path === '/dashboard' ? 'Daily Post — Your stories' : path === '/signup' ? 'Daily Post — Create account' : path === '/signin' ? 'Daily Post — Sign in' : 'Daily Post — Ideas worth sharing'
   }, [path])
 
   if (path === '/signin') return <AuthPage initialMode="signin" />
   if (path === '/signup') return <AuthPage initialMode="signup" />
   if (path === '/dashboard') return <DashboardPage />
   if (path === '/write') return <EditorPage />
-  if (path === '/feed') return <FeedPage />
+  if (path === '/feed' || path === '/blog/feed') return <FeedPage />
   if (path === '/studio') return <StudioPage />
   if (path.startsWith('/edit/')) return <EditorPage postId={decodeURIComponent(path.slice('/edit/'.length))} />
   if (path.startsWith('/article/')) return <ArticleReaderPage id={decodeURIComponent(path.slice('/article/'.length))} />

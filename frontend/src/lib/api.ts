@@ -1,9 +1,19 @@
 import type { PostInput, SigninInput, SignupInput, UpdatePostInput } from '@lazy_support_engineer/medium-common'
 
-const API_BASE_URL = 'https://backend.ravirajkumar101-hitece2020.workers.dev/api/v1'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL?.replace(/\/+$/, '')
+
+if (!API_BASE_URL) {
+  throw new Error('VITE_API_BASE_URL is not configured.')
+}
 
 type AuthResponse = { jwt: string }
-export type Post = { id: string; title: string; content: string; published: boolean }
+export type Post = {
+  id: string
+  title: string
+  content: string
+  published: boolean
+  author?: { name: string | null; email: string }
+}
 
 export async function authenticate(mode: 'signin' | 'signup', payload: SigninInput | SignupInput) {
   const response = await fetch(`${API_BASE_URL}/user/${mode}`, {
@@ -27,6 +37,17 @@ export async function getPosts(token: string) {
 
   if (!response.ok) {
     throw new Error(response.status === 401 ? 'Your session has expired. Please sign in again.' : 'Unable to load your stories.')
+  }
+
+  const data = await response.json() as { posts: Post[] }
+  return data.posts
+}
+
+export async function getPublicPosts() {
+  const response = await fetch(`${API_BASE_URL}/blog/feed`)
+
+  if (!response.ok) {
+    throw new Error('Unable to load the public feed.')
   }
 
   const data = await response.json() as { posts: Post[] }
